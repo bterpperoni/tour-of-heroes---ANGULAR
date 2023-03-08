@@ -1,0 +1,16 @@
+<!------------------------ List of heroes ------------------------>
+<h2> Détails</h2>
+<ul class="heroes">
+  <li *ngFor="let hero of heroes">
+    <button [class.selected]="hero === selectedHero" type="button" (click)="onSelect(hero)">
+      <span class="badge"> {{hero.id}} </span>
+      <span class="name"> {{hero.name}} </span>
+    </button>
+  </li>
+</ul>
+<!--
+    Property hero from HeroDetailComponent (child) bind to property selectedHero
+    from HeroesComponent (parent). It is a one way binding
+-->
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+
