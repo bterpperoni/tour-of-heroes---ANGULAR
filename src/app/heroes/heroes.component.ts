@@ -17,20 +17,12 @@ import { MessageService } from '../message.service';
 /*-----------------------------------------------------------------*/
 export class HeroesComponent implements OnInit{
 
-// Service injection in the parent component (HeroesComponent) with a constructor
-// /!\ Cannot call any function there. Reserve it for minimal init. /!\
-constructor(private heroService: HeroService, private messageService: MessageService) {}
-
+  // Service injection in the parent component (HeroesComponent) with a constructor
+  // /!\ Cannot call any function there. Reserve it for minimal init. /!\
+  constructor(private heroService: HeroService) {}
   // Storage attributes.
   heroes: Hero[] = [];
-  selectedHero?: Hero;
-
-  // Bind hero chosen by the user to the 'selectedtHero' attribute.
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
-    // /!\ /!\ Need to use back tick (``) into the 'add' method to display the hero.name value /!\ /!\
-    this.messageService.add(`HeroesComponent: Selected hero: ${hero.name}`);
-  }
+  // selectedHero?: Hero;
 
   // Get heroes from the service & bind it to heroes attr.
   getHeroes(): void {
@@ -42,4 +34,15 @@ constructor(private heroService: HeroService, private messageService: MessageSer
   ngOnInit(): void {
     this.getHeroes();
   }
+
+  /*------------------------------------OLDER VERSION-----------------------------------------------*/
+  /*
+    // Bind hero chosen by the user to the 'selectedtHero' attribute.
+    // /!\ /!\ Need to use back tick (``) into the 'add' method to display the hero.name value /!\ /!\.
+
+      onSelect(hero: Hero): void {
+      this.selectedHero = hero;
+      this.messageService.add(`HeroesComponent: Selected hero: ${hero.name}`);
+      }
+  */
 }
