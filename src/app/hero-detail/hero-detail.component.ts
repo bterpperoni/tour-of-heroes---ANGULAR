@@ -10,30 +10,41 @@ import { HeroService } from '../hero.service';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-hero-detail',
-  templateUrl: './hero-detail.component.html',
-  styleUrls: ['./hero-detail.component.css']
+selector: 'app-hero-detail',
+templateUrl: './hero-detail.component.html',
+styleUrls: ['./hero-detail.component.css']
 })
-export class HeroDetailComponent {
+export class HeroDetailComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,
-              private heroService: HeroService,
-              private location: Location) {}
-  // Allow to bind this component to external component HeroesComponent with @Input().
-  // This component just receives a Hero Object & display it.
-  @Input() hero?: Hero;
+constructor(private route: ActivatedRoute,
+            private heroService: HeroService,
+            private location: Location) {}
+// Allow to bind this component to external component HeroesComponent with @Input().
+// This component just receives a Hero Object & display it.
+hero: Hero | undefined;
 
-  ngOnInit(): void {
-    this.getHero();
+ngOnInit(): void {
+  this.getHero();
+}
+
+getHero(): void {
+  /*
+  - The route.snapshot is a static image of the route information shortly after the component was created.
+  - The paramMap is a dictionary of route parameter values extracted from the URL.
+  - Route parameters are always strings. The JavaScript Number function converts the string to a number.
+  */
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+  this.heroService.getHero(id).subscribe(hero => this.hero = hero);
+}
+
+save(): void {
+  if(this.hero){
+    this.heroService.updateHero(this.hero)
+                    .subscribe(() => this.goBack());
   }
+}
 
-  getHero(): void {
-    /*
-    - The route.snapshot is a static image of the route information shortly after the component was created.
-    - The paramMap is a dictionary of route parameter values extracted from the URL.
-    - Route parameters are always strings. The JavaScript Number function converts the string to a number.
-    */
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.heroService.getHero(id).subscribe(hero => this.hero = hero);
-  }
+goBack(): void {
+  this.location.back();
+}
 }
